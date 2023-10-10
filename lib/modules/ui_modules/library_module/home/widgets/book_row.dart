@@ -1,4 +1,7 @@
 import 'package:booksphere/modules/component_modules/library_component/domain/entities/book.dart';
+import 'package:booksphere/modules/component_modules/library_component/domain/entities/genre.dart';
+import 'package:booksphere/modules/ui_modules/library_module/book_detail/book_detail_screen.dart';
+import 'package:booksphere/modules/ui_modules/library_module/genres/genre_screen.dart';
 import 'package:booksphere/utils/app_layout.dart';
 import 'package:flutter/material.dart';
 
@@ -6,11 +9,11 @@ class BookRow extends StatelessWidget {
   const BookRow({
     Key? key,
     required this.books,
-    required this.title,
+    required this.genre,
   }) : super(key: key);
 
   final List<Book> books;
-  final String title;
+  final Genre genre;
 
   @override
   Widget build(BuildContext context) {
@@ -26,11 +29,16 @@ class BookRow extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                title,
+                genre.name,
                 style: Theme.of(context).textTheme.headline6,
               ),
               TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => GenreScreen(genre: genre),
+                      ));
+                },
                 child: const Text("See All"),
               ),
             ],
@@ -49,41 +57,50 @@ class BookRow extends StatelessWidget {
                   scrollDirection: Axis.horizontal,
                   itemCount: books.length,
                   itemBuilder: (context, index) {
-                    return Container(
-                      width: displayWidth * 0.3,
-                      margin: EdgeInsets.symmetric(horizontal: displayWidth * 0.02),
-                      child: Column(
-                        children: [
-                          Expanded(
-                            flex: 3,
-                            child: Image.network(
-                              books[index].coverImg,
-                              fit: BoxFit.contain,
-                              errorBuilder: (context, error, stackTrace) {
-                                return const Center(
-                                  child: Icon(Icons.error),
-                                );
-                              },
-                              loadingBuilder: (context, child, loadingProgress) {
-                                if (loadingProgress == null) {
-                                  return child;
-                                }
-                                return const Center(
-                                  child: CircularProgressIndicator(),
-                                );
-                              },
-                            ),
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => BookDetailScreen(book: books[index]),
                           ),
-                          Expanded(
-                            flex: 1,
-                            child: Text(
-                              books[index].title,
-                              style: Theme.of(context).textTheme.labelMedium,
-                              textAlign: TextAlign.center,
-                              overflow: TextOverflow.ellipsis,
+                        );
+                      },
+                      child: Container(
+                        width: displayWidth * 0.3,
+                        margin: EdgeInsets.symmetric(horizontal: displayWidth * 0.02),
+                        child: Column(
+                          children: [
+                            Expanded(
+                              flex: 3,
+                              child: Image.network(
+                                books[index].coverImg,
+                                fit: BoxFit.contain,
+                                errorBuilder: (context, error, stackTrace) {
+                                  return const Center(
+                                    child: Icon(Icons.error),
+                                  );
+                                },
+                                loadingBuilder: (context, child, loadingProgress) {
+                                  if (loadingProgress == null) {
+                                    return child;
+                                  }
+                                  return const Center(
+                                    child: CircularProgressIndicator(),
+                                  );
+                                },
+                              ),
                             ),
-                          ),
-                        ],
+                            Expanded(
+                              flex: 1,
+                              child: Text(
+                                books[index].title,
+                                style: Theme.of(context).textTheme.labelMedium,
+                                textAlign: TextAlign.center,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     );
                   },

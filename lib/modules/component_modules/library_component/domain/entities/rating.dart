@@ -5,7 +5,7 @@ class Rating extends Equatable{
   final int? id;
   final String userId;
   final String bookId;
-  final int rating;
+  final double rating;
 
   const Rating({
     this.id,

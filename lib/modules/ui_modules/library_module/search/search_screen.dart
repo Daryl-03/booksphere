@@ -1,6 +1,8 @@
+import 'package:booksphere/modules/ui_modules/library_module/search/result_screen.dart';
 import 'package:booksphere/modules/ui_modules/library_module/search/widgets/genre_grid.dart';
 import 'package:booksphere/utils/app_layout.dart';
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 
 class SearchScreen extends StatelessWidget {
   const SearchScreen({Key? key}) : super(key: key);
@@ -25,6 +27,10 @@ class SearchScreen extends StatelessWidget {
             Padding(
               padding: EdgeInsets.symmetric(horizontal: displayWidth * 0.05),
               child: TextField(
+                readOnly: true,
+                onTap: (){
+                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => const ResultScreen()));
+                },
                 decoration: InputDecoration(
                   hintText: "Search",
                   suffixIcon: const Icon(Icons.search),

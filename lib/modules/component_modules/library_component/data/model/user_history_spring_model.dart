@@ -1,5 +1,6 @@
 
 import 'package:booksphere/modules/component_modules/library_component/domain/entities/book_state.dart';
+import 'package:booksphere/modules/component_modules/library_component/domain/entities/user_history.dart';
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -20,6 +21,22 @@ class UserHistorySpringModel extends Equatable {
   final String bookId;
   final BookState bookState;
   final int bookmark;
+
+  UserHistory toEntity() => UserHistory(
+    id: id,
+    userId: userId,
+    bookId: bookId,
+    bookState: bookState,
+    bookmark: bookmark
+  );
+
+  factory UserHistorySpringModel.fromEntity(UserHistory userHistory) => UserHistorySpringModel(
+    id: userHistory.id,
+    userId: userHistory.userId,
+    bookId: userHistory.bookId,
+    bookState: userHistory.bookState,
+    bookmark: userHistory.bookmark
+  );
 
   @override
   List<Object?> get props {

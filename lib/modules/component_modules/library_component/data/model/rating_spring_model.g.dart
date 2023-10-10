@@ -11,7 +11,7 @@ RatingSpringModel _$RatingSpringModelFromJson(Map<String, dynamic> json) =>
       id: json['id'] as int?,
       userId: json['userId'] as String,
       bookId: json['bookId'] as String,
-      rating: json['rating'] as int,
+      rating: (json['rating'] as num).toDouble(),
     );
 
 Map<String, dynamic> _$RatingSpringModelToJson(RatingSpringModel instance) =>

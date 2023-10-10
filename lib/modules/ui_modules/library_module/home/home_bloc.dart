@@ -27,21 +27,21 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   Future<void> _onLoadInitialHomeEvent(HomeInitialEvent event, Emitter<HomeState> emit) async{
     await _userDetailUseCases.getUserDataUseCase();
     emit(state.copyWith(isLoading: false, user: signedInUser));
-    Logger().d("user data fetched : $signedInUser");
-    Logger().d("fetching top books");
+    // Logger().d("user data fetched : $signedInUser");
+    // Logger().d("fetching top books");
 
 
     var top = await _libraryUseCases.getBooksUseCase(3, booksPerGenre);
-    Logger().d("top books fetched : $top");
-    emit(state.copyWith(topBooks: top));
-    Logger().d("fetching top books done");
+    // Logger().d("top books fetched : $top");
+    emit(state.copyWith(topBooks: top.data));
+    // Logger().d("fetching top books done");
 
     for (Genre genre in BookGenreUtils.getAppGenres()){
-      var books = await _libraryUseCases.getBooksByGenreUseCase(genre.id, 0, booksPerGenre);
+      var booksPage = await _libraryUseCases.getBooksByGenreUseCase(genre.id, 0, booksPerGenre);
       var map = Map<Genre, List<Book>>.from(state.map!);
-      map[genre] = books;
+      map[genre] = booksPage.data;
       emit(state.copyWith(map: map));
-      Logger().d("fetched books for genre ${genre.name}");
+      // Logger().d("fetched books for genre ${genre.name}");
     }
   }
 

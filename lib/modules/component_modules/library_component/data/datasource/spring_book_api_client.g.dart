@@ -21,7 +21,7 @@ class _SpringBookApiClient implements SpringBookApiClient {
   String? baseUrl;
 
   @override
-  Future<List<BookSpringModel>> getBooksPerGenre(
+  Future<PaginatedSpringModel<BookSpringModel>> getBooksPerGenre(
     int genreId,
     int page,
     int pageSize,
@@ -33,8 +33,8 @@ class _SpringBookApiClient implements SpringBookApiClient {
     };
     final _headers = <String, dynamic>{};
     final Map<String, dynamic>? _data = null;
-    final _result = await _dio
-        .fetch<List<dynamic>>(_setStreamType<List<BookSpringModel>>(Options(
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<PaginatedSpringModel<BookSpringModel>>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
@@ -50,23 +50,23 @@ class _SpringBookApiClient implements SpringBookApiClient {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    var value = _result.data!
-        .map((dynamic i) => BookSpringModel.fromJson(i as Map<String, dynamic>))
-        .toList();
+    final value = PaginatedSpringModel<BookSpringModel>.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<List<BookSpringModel>> searchBooks(
+  Future<PaginatedSpringModel<BookSpringModel>> searchBooks(
     String searchTerm,
-    int page,
-  ) async {
+    int page, [
+    CancelToken? cancelToken,
+  ]) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{r'page': page};
+    queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     final Map<String, dynamic>? _data = null;
-    final _result = await _dio
-        .fetch<List<dynamic>>(_setStreamType<List<BookSpringModel>>(Options(
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<PaginatedSpringModel<BookSpringModel>>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
@@ -76,15 +76,80 @@ class _SpringBookApiClient implements SpringBookApiClient {
               'api/book/search/${searchTerm}',
               queryParameters: queryParameters,
               data: _data,
+              cancelToken: cancelToken,
             )
             .copyWith(
                 baseUrl: _combineBaseUrls(
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    var value = _result.data!
-        .map((dynamic i) => BookSpringModel.fromJson(i as Map<String, dynamic>))
-        .toList();
+    final value = PaginatedSpringModel<BookSpringModel>.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<PaginatedSpringModel<BookSpringModel>> searchBooksByAuthor(
+    String searchTerm,
+    int page, [
+    CancelToken? cancelToken,
+  ]) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'page': page};
+    queryParameters.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<PaginatedSpringModel<BookSpringModel>>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              'api/book/searchByAuthor/${searchTerm}',
+              queryParameters: queryParameters,
+              data: _data,
+              cancelToken: cancelToken,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final value = PaginatedSpringModel<BookSpringModel>.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<PaginatedSpringModel<BookSpringModel>> searchBooksByTitle(
+    String searchTerm,
+    int page, [
+    CancelToken? cancelToken,
+  ]) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'page': page};
+    queryParameters.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<PaginatedSpringModel<BookSpringModel>>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              'api/book/searchByTitle/${searchTerm}',
+              queryParameters: queryParameters,
+              data: _data,
+              cancelToken: cancelToken,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final value = PaginatedSpringModel<BookSpringModel>.fromJson(_result.data!);
     return value;
   }
 
@@ -116,7 +181,7 @@ class _SpringBookApiClient implements SpringBookApiClient {
   }
 
   @override
-  Future<List<BookSpringModel>> getBooks(
+  Future<PaginatedSpringModel<BookSpringModel>> getBooks(
     int page,
     int pageSize,
   ) async {
@@ -127,8 +192,8 @@ class _SpringBookApiClient implements SpringBookApiClient {
     };
     final _headers = <String, dynamic>{};
     final Map<String, dynamic>? _data = null;
-    final _result = await _dio
-        .fetch<List<dynamic>>(_setStreamType<List<BookSpringModel>>(Options(
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<PaginatedSpringModel<BookSpringModel>>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
@@ -144,9 +209,7 @@ class _SpringBookApiClient implements SpringBookApiClient {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    var value = _result.data!
-        .map((dynamic i) => BookSpringModel.fromJson(i as Map<String, dynamic>))
-        .toList();
+    final value = PaginatedSpringModel<BookSpringModel>.fromJson(_result.data!);
     return value;
   }
 
@@ -234,6 +297,40 @@ class _SpringBookApiClient implements SpringBookApiClient {
   }
 
   @override
+  Future<RatingSpringModel?> getRatingByBookIdAndUserId(
+    String bookId,
+    String userId,
+  ) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'bookId': bookId,
+      r'userId': userId,
+    };
+    final _headers = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
+    final _result = await _dio
+        .fetch<Map<String, dynamic>?>(_setStreamType<RatingSpringModel>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              'api/ratings/getByBookIdAndUserId',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final value =
+        _result.data == null ? null : RatingSpringModel.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
   Future<void> create(UserHistorySpringModel userHistory) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
@@ -284,7 +381,7 @@ class _SpringBookApiClient implements SpringBookApiClient {
   }
 
   @override
-  Future<UserHistorySpringModel> getUserHistoryByUserIdAndBookId(
+  Future<UserHistorySpringModel?> getUserHistoryByUserIdAndBookId(
     String userId,
     String bookId,
   ) async {
@@ -295,7 +392,7 @@ class _SpringBookApiClient implements SpringBookApiClient {
     };
     final _headers = <String, dynamic>{};
     final Map<String, dynamic>? _data = null;
-    final _result = await _dio.fetch<Map<String, dynamic>>(
+    final _result = await _dio.fetch<Map<String, dynamic>?>(
         _setStreamType<UserHistorySpringModel>(Options(
       method: 'GET',
       headers: _headers,
@@ -312,7 +409,9 @@ class _SpringBookApiClient implements SpringBookApiClient {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    final value = UserHistorySpringModel.fromJson(_result.data!);
+    final value = _result.data == null
+        ? null
+        : UserHistorySpringModel.fromJson(_result.data!);
     return value;
   }
 

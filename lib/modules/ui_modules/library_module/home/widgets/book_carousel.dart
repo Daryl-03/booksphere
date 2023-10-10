@@ -1,4 +1,5 @@
 import 'package:booksphere/modules/component_modules/library_component/domain/entities/book.dart';
+import 'package:booksphere/modules/ui_modules/library_module/book_detail/book_detail_screen.dart';
 import 'package:booksphere/modules/ui_modules/library_module/home/home_state.dart';
 import 'package:booksphere/utils/app_layout.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -30,24 +31,34 @@ class BookCarousel extends StatelessWidget {
             borderRadius: BorderRadius.circular(8.0),
           ),
           child: topBooks!.isEmpty
-              ? Image.memory(kTransparentImage)
-              : Image.network(
-                  topBooks![index].coverImg,
-                  fit: BoxFit.fitWidth,
-                  errorBuilder: (context, error, stackTrace) {
-                    return const Center(
-                      child: Icon(Icons.error),
-                    );
+              ? const Center(
+                  child: CircularProgressIndicator(),
+                )
+              : GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => BookDetailScreen(book: topBooks![index]),
+                      ));
                   },
-                  loadingBuilder: (context, child, loadingProgress) {
-                    if (loadingProgress == null) {
-                      return child;
-                    }
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  },
-                ),
+                child: Image.network(
+                    topBooks![index].coverImg,
+                    fit: BoxFit.fitWidth,
+                    errorBuilder: (context, error, stackTrace) {
+                      return const Center(
+                        child: Icon(Icons.error),
+                      );
+                    },
+                    loadingBuilder: (context, child, loadingProgress) {
+                      if (loadingProgress == null) {
+                        return child;
+                      }
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    },
+                  ),
+              ),
         );
       },
       options: CarouselOptions(

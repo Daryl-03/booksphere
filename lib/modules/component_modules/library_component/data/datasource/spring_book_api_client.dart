@@ -1,5 +1,7 @@
 import 'package:booksphere/modules/component_modules/library_component/data/model/book_spring_model.dart';
+import 'package:booksphere/modules/component_modules/library_component/data/model/paginated_spring_model.dart';
 import 'package:booksphere/modules/component_modules/library_component/data/model/user_history_spring_model.dart';
+import 'package:booksphere/modules/component_modules/library_component/domain/entities/book.dart';
 import 'package:booksphere/modules/component_modules/library_component/domain/entities/rating.dart';
 import 'package:booksphere/modules/component_modules/library_component/domain/entities/user_history.dart';
 import 'package:booksphere/utils/spring_book_api_endpoints.dart';
@@ -15,18 +17,27 @@ abstract class SpringBookApiClient {
 
   factory SpringBookApiClient(Dio dio, {String baseUrl}) = _SpringBookApiClient;
 
+  // books
 
   @GET("${SpringBookApiEndpoints.books}/getByGenre/{id}")
-  Future<List<BookSpringModel>> getBooksPerGenre(@Path("id") int genreId, @Query("page") int page, @Query("pageSize") int pageSize);
+  Future<PaginatedSpringModel<BookSpringModel>> getBooksPerGenre(@Path("id") int genreId, @Query("page") int page, @Query("pageSize") int pageSize);
 
   @GET("${SpringBookApiEndpoints.books}/search/{searchTerm}")
-  Future<List<BookSpringModel>> searchBooks(@Path("searchTerm") String searchTerm, @Query("page") int page);
+  Future<PaginatedSpringModel<BookSpringModel>> searchBooks(@Path("searchTerm") String searchTerm, @Query("page") int page, [@CancelRequest() CancelToken? cancelToken]);
+
+  @GET("${SpringBookApiEndpoints.books}/searchByAuthor/{searchTerm}")
+  Future<PaginatedSpringModel<BookSpringModel>> searchBooksByAuthor(@Path("searchTerm") String searchTerm, @Query("page") int page, [@CancelRequest() CancelToken? cancelToken]);
+
+  @GET("${SpringBookApiEndpoints.books}/searchByTitle/{searchTerm}")
+  Future<PaginatedSpringModel<BookSpringModel>> searchBooksByTitle(@Path("searchTerm") String searchTerm, @Query("page") int page, [@CancelRequest() CancelToken? cancelToken]);
 
   @GET("${SpringBookApiEndpoints.books}/{bookId}")
   Future<BookSpringModel> findBookById(@Path("bookId") String bookId);
 
   @GET(SpringBookApiEndpoints.books)
-  Future<List<BookSpringModel>> getBooks(@Query("page") int page, @Query("pageSize") int pageSize);
+  Future<PaginatedSpringModel<BookSpringModel>> getBooks(@Query("page") int page, @Query("pageSize") int pageSize);
+
+  // ratings
 
   @POST(SpringBookApiEndpoints.ratings)
   Future<void> createRating(@Body() RatingSpringModel rating);
@@ -37,6 +48,11 @@ abstract class SpringBookApiClient {
   @DELETE("${SpringBookApiEndpoints.ratings}/deleteByUserIdAndBookId")
   Future<void> deleteRatingByUserIdAndBookId(@Query("userId") String userId, @Query("bookId") String bookId);
 
+  @GET("${SpringBookApiEndpoints.ratings}/getByBookIdAndUserId")
+  Future<RatingSpringModel?> getRatingByBookIdAndUserId(@Query("bookId") String bookId, @Query("userId") String userId);
+
+  // user history
+
   @POST(SpringBookApiEndpoints.userHistory)
   Future<void> create(@Body() UserHistorySpringModel userHistory);
 
@@ -44,6 +60,6 @@ abstract class SpringBookApiClient {
   Future<void> delete(@Body() UserHistorySpringModel userHistory);
 
   @GET("${SpringBookApiEndpoints.userHistory}/getByUserIdAndBookId")
-  Future<UserHistorySpringModel> getUserHistoryByUserIdAndBookId(@Query("userId") String userId, @Query("bookId") String bookId);
+  Future<UserHistorySpringModel?> getUserHistoryByUserIdAndBookId(@Query("userId") String userId, @Query("bookId") String bookId);
 
 }

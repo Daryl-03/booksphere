@@ -5,12 +5,13 @@ import 'package:booksphere/modules/component_modules/library_component/domain/re
 import 'package:injectable/injectable.dart';
 
 @lazySingleton
-class GetBooksUseCase {
+class GetBooksByAuthorUseCase {
+
   final LibraryRepository _libraryRepository;
 
-  GetBooksUseCase(this._libraryRepository);
+  const GetBooksByAuthorUseCase(this._libraryRepository);
 
-  Future<PaginatedEntity<Book>> call(int page, int size) async {
-    return await _libraryRepository.getBooks(page, size);
+  Future<PaginatedEntity<Book>> call(String search, int page, [Object? cancelToken]) async{
+    return await _libraryRepository.getBooksByAuthor(search, page, cancelToken);
   }
 }

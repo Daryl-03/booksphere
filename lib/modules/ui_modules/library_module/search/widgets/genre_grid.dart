@@ -1,4 +1,5 @@
 import 'package:booksphere/modules/component_modules/library_component/domain/entities/genre.dart';
+import 'package:booksphere/modules/ui_modules/library_module/genres/genre_screen.dart';
 import 'package:booksphere/utils/book_genre_utils.dart';
 import 'package:flutter/material.dart';
 
@@ -17,7 +18,12 @@ class GenreGrid extends StatelessWidget {
             .map(
               (genre) => Card(
                 child: InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => GenreScreen(genre: genre),
+                      ));
+                  },
                   child: Center(
                     child: Text(
                       genre.name,

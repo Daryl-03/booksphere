@@ -78,7 +78,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   BookRow(
                     key: ObjectKey(genre),
                     books: state.map![genre] ?? [],
-                    title: genre.name,
+                    genre: genre,
                   ),
 
               ],

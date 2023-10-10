@@ -5,6 +5,7 @@ class ResultState extends Equatable {
   bool isLoading = false;
   int nextPage = 0;
   bool hasReachedMax = false;
+  bool isSearching = false;
   List<Book> books = [];
 
   ResultState._();
@@ -13,6 +14,7 @@ class ResultState extends Equatable {
 
   ResultState copyWith({
     bool? isLoading,
+    bool? isSearching,
     List<Book>? books,
     int? nextPage,
     bool? hasReachedMax,
@@ -21,8 +23,9 @@ class ResultState extends Equatable {
         ..isLoading = isLoading ?? this.isLoading
         ..books = books ?? this.books
         ..nextPage = nextPage ?? this.nextPage
+        ..isSearching = isSearching ?? this.isSearching
         ..hasReachedMax = hasReachedMax ?? this.hasReachedMax;
 
   @override
-  List<Object?> get props => [isLoading, books, nextPage, hasReachedMax];
+  List<Object?> get props => [isLoading, books, nextPage, hasReachedMax, isSearching];
 }

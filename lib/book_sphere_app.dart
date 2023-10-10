@@ -28,7 +28,7 @@ class BookSphereApp extends StatelessWidget {
       home: StreamBuilder(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-          Logger().i("snapshot : ${snapshot.connectionState}");
+          // Logger().i("snapshot : ${snapshot.connectionState}");
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const SplashScreen();
           }
