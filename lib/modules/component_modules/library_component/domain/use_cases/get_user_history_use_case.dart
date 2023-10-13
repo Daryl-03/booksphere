@@ -4,12 +4,12 @@ import 'package:booksphere/modules/component_modules/library_component/domain/re
 import 'package:injectable/injectable.dart';
 
 @lazySingleton
-class DeleteBookFromHistoryUseCase {
+class GetUserHistoryUseCase {
   final LibraryRepository _libraryRepository;
 
-  DeleteBookFromHistoryUseCase(this._libraryRepository);
+  GetUserHistoryUseCase(this._libraryRepository);
 
-  Future<void> call(UserHistory userHistory) async {
-    await _libraryRepository.deleteBookFromHistory(userHistory);
+  Future<List<UserHistory>> call() {
+    return _libraryRepository.getUserHistory();
   }
 }

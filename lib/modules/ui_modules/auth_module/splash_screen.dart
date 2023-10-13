@@ -1,5 +1,3 @@
-import 'package:booksphere/modules/ui_modules/auth_module/register/register_screen.dart';
-import 'package:booksphere/modules/ui_modules/auth_module/widgets/welcome_screen_button.dart';
 import 'package:booksphere/utils/app_layout.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';

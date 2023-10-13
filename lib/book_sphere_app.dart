@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:logger/logger.dart';
 
 import 'modules/ui_modules/auth_module/splash_screen.dart';
+import 'utils/constants.dart';
 
 final kThemeData = ThemeData(
   colorScheme: ColorScheme.fromSeed(
@@ -27,13 +28,14 @@ class BookSphereApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       home: StreamBuilder(
         stream: FirebaseAuth.instance.authStateChanges(),
-        builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+        builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot){
           // Logger().i("snapshot : ${snapshot.connectionState}");
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const SplashScreen();
           }
 
           if (snapshot.hasData) {
+            signedInUserId = FirebaseAuth.instance.currentUser!.uid;
             return const RootScreen();
           }
 

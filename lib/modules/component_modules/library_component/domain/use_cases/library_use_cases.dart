@@ -1,3 +1,4 @@
+import 'package:booksphere/modules/component_modules/library_component/domain/use_cases/get_user_history_use_case.dart';
 import 'package:injectable/injectable.dart';
 
 import 'get_books_by_author_use_case.dart';
@@ -13,6 +14,9 @@ import 'get_rating_by_book_id_use_case.dart';
 import 'rate_book_use_case.dart';
 import 'update_rating_use_case.dart';
 import 'delete_rating_use_case.dart';
+import 'get_ratings_by_user_id_use_case.dart';
+import 'get_books_by_ids_use_case.dart';
+import 'get_recommended_books_use_case.dart';
 
 @injectable
 class LibraryUseCases {
@@ -29,6 +33,10 @@ class LibraryUseCases {
   final RateBookUseCase rateBookUseCase;
   final UpdateRatingUseCase updateRatingUseCase;
   final DeleteRatingUseCase deleteRatingUseCase;
+  final GetUserHistoryUseCase getUserHistoryUseCase;
+  final GetRatingsByUserIdUseCase getRatingsByUserIdUseCase;
+  final GetBooksByIdsUseCase getBooksByIdsUseCase;
+  final GetRecommendedBooksUseCase getRecommendedBooksUseCase;
 
 
   LibraryUseCases({
@@ -45,5 +53,9 @@ class LibraryUseCases {
     required this.rateBookUseCase,
     required this.updateRatingUseCase,
     required this.deleteRatingUseCase,
+    required this.getUserHistoryUseCase,
+    required this.getRatingsByUserIdUseCase,
+    required this.getBooksByIdsUseCase,
+    required this.getRecommendedBooksUseCase,
   });
 }

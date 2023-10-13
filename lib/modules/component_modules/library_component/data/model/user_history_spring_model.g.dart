@@ -10,10 +10,10 @@ UserHistorySpringModel _$UserHistorySpringModelFromJson(
         Map<String, dynamic> json) =>
     UserHistorySpringModel(
       id: json['id'] as int?,
-      userId: json['userId'] as int,
+      userId: json['userId'] as String,
       bookId: json['bookId'] as String,
       bookState: $enumDecode(_$BookStateEnumMap, json['bookState']),
-      bookmark: json['bookmark'] as int,
+      bookmark: json['bookmark'] as int?,
     );
 
 Map<String, dynamic> _$UserHistorySpringModelToJson(

@@ -17,7 +17,7 @@ class SearchScreen extends StatelessWidget {
         backgroundColor: theme.colorScheme.background,
         appBar: AppBar(
           title: const Text("Search books"),
-          backgroundColor: theme.colorScheme.background,
+          backgroundColor: theme.colorScheme.secondaryContainer,
         ),
         body: Column(
           children: [

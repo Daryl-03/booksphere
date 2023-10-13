@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-import 'package:json_annotation/json_annotation.dart';
 
 class Rating extends Equatable{
   final int? id;
@@ -13,6 +12,20 @@ class Rating extends Equatable{
     required this.bookId,
     required this.rating,
   });
+
+  Rating copyWith({
+    int? id,
+    String? userId,
+    String? bookId,
+    double? rating,
+  }) {
+    return Rating(
+      id: id ?? this.id,
+      userId: userId ?? this.userId,
+      bookId: bookId ?? this.bookId,
+      rating: rating ?? this.rating,
+    );
+  }
 
   @override
   List<Object?> get props => [

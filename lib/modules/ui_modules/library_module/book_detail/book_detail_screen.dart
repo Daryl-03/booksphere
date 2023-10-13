@@ -22,14 +22,14 @@ class BookDetailScreen extends StatefulWidget {
 }
 
 class _BookDetailScreenState extends State<BookDetailScreen> {
-  final genres = [
-    'Action',
-    'Adventure',
-    'Drama',
-    'Fantasy',
-    'Sci-Fi',
-    'Thriller'
-  ];
+  // final genres = [
+  //   'Action',
+  //   'Adventure',
+  //   'Drama',
+  //   'Fantasy',
+  //   'Sci-Fi',
+  //   'Thriller'
+  // ];
   final _bookDetailBloc = BookDetailBloc();
 
   @override
@@ -42,21 +42,13 @@ class _BookDetailScreenState extends State<BookDetailScreen> {
     await showModalBottomSheet(
         context: context,
         builder: (context) {
-          return const BookLibraryInput(
-              userHistory: null,
-              rating: null,
-              book: Book(
-                title: 'The Hunger Games',
-                genres: [],
-                bookId: '1',
-                description: '',
-                coverImg: '',
-                isbn: '',
-                pages: 200,
-                rating: 0,
-                numRatings: 0,
-                authors: [],
-              ));
+          return BlocProvider.value(
+            value: _bookDetailBloc,
+            child: BookLibraryInput(
+                userHistory: _bookDetailBloc.state.userHistory,
+                rating: _bookDetailBloc.state.rating,
+                book: widget.book),
+          );
         });
   }
 
@@ -71,16 +63,15 @@ class _BookDetailScreenState extends State<BookDetailScreen> {
         listener: (BuildContext context, BookDetailState state) {},
         builder: (context, BookDetailState state) {
           return Scaffold(
-            backgroundColor: theme.colorScheme.primary,
             appBar: AppBar(
               automaticallyImplyLeading: true,
               backgroundColor: theme.colorScheme.secondaryContainer,
               foregroundColor: theme.colorScheme.onSecondaryContainer,
             ),
-            body: Column(children: [
+            body: Column(mainAxisSize: MainAxisSize.max, children: [
               SizedBox(
                 width: displayWidth,
-                height: displayHeight * 0.4,
+                height: displayHeight * 0.45,
                 child: Stack(
                   children: [
                     Column(
@@ -113,9 +104,20 @@ class _BookDetailScreenState extends State<BookDetailScreen> {
                               BorderRadius.circular(displayWidth * 0.02),
                           image: DecorationImage(
                             image: Image.network(
-                              'https://fr.web.img5.acsta.net/medias/nmedia/18/64/34/28/18771027.jpg',
+                              widget.book.coverImg,
+                              errorBuilder: (context, error, stackTrace) =>
+                                  const Icon(Icons.error),
+                              loadingBuilder:
+                                  (context, child, loadingProgress) {
+                                if (loadingProgress == null) {
+                                  return child;
+                                }
+                                return const Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              },
                             ).image,
-                            fit: BoxFit.cover,
+                            fit: BoxFit.contain,
                           ),
                         ),
                       ),
@@ -123,20 +125,22 @@ class _BookDetailScreenState extends State<BookDetailScreen> {
                     // book title
                     Positioned(
                       top: displayHeight * 0.33,
-                      child: SizedBox(
+                      child: Container(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: displayWidth * 0.01,
+                        ),
                         width: displayWidth,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                        child: Wrap(
+                          // mainAxisAlignment: MainAxisAlignment.center,
+                          alignment: WrapAlignment.center,
                           children: [
                             Text(
-                              'The Hunger Games',
+                              widget.book.title,
                               style: theme.textTheme.titleLarge!.copyWith(
                                 color: theme.colorScheme.onPrimary,
                                 fontWeight: FontWeight.bold,
                               ),
                               textAlign: TextAlign.center,
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
                             ),
                           ],
                         ),
@@ -145,132 +149,144 @@ class _BookDetailScreenState extends State<BookDetailScreen> {
                   ],
                 ),
               ),
-              Container(
-                color: theme.colorScheme.primary,
-                width: displayWidth,
-                height: displayHeight * 0.5,
-                child: SingleChildScrollView(
-                  child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SizedBox(
-                          height: displayHeight * 0.02,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              'Suzanne Collins',
-                              style: theme.textTheme.titleSmall!.copyWith(
-                                color: theme.colorScheme.onPrimary,
-                                fontWeight: FontWeight.bold,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: displayHeight * 0.02,
-                        ),
-                        //        isbn and number of pages
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              'ISBN : 9780439023481 | 374 pages',
-                              style: theme.textTheme.labelLarge!.copyWith(
-                                color: theme.colorScheme.onPrimary,
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: displayHeight * 0.02,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            RatingBarIndicator(
-                              rating: 4.5,
-                              itemBuilder: (context, index) => const Icon(
-                                Icons.star,
-                                color: Colors.amber,
-                              ),
-                              itemCount: 5,
-                              itemSize: displayWidth * 0.065,
-                              unratedColor: theme.colorScheme.onPrimary,
-                            ),
-                            SizedBox(
-                              width: displayWidth * 0.02,
-                            ),
-                            // number of ratings
-                            Text(
-                              "(2 ratings)",
-                              style: theme.textTheme.labelSmall!.copyWith(
-                                color: theme.colorScheme.onPrimary,
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: displayHeight * 0.02,
-                        ),
-                        Divider(
-                          color: theme.colorScheme.secondaryContainer,
-                          thickness: 1,
-                        ),
-                        SizedBox(
-                          height: displayHeight * 0.02,
-                        ),
-                        Row(
-                          children: [
-                            Text(
-                              'Description',
-                              style: theme.textTheme.titleSmall!.copyWith(
-                                color: theme.colorScheme.onPrimary,
-                                fontWeight: FontWeight.bold,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: displayHeight * 0.02,
-                        ),
-                        Divider(
-                          color: theme.colorScheme.secondaryContainer,
-                          thickness: 1,
-                        ),
-                        SizedBox(
-                          height: displayHeight * 0.02,
-                        ),
-                        // genres tags
-                        SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          padding: EdgeInsets.symmetric(
-                              horizontal: displayWidth * 0.03),
-                          child: Row(
-                            children: genres
-                                .map(
-                                  (genre) => Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Chip(
-                                        label: Text(
-                                          genre,
-                                          style: theme.textTheme.labelSmall,
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        width: displayWidth * 0.02,
-                                      ),
-                                    ],
-                                  ),
-                                )
-                                .toList(),
+              Expanded(
+                child: Container(
+                  color: theme.colorScheme.primary,
+                  width: displayWidth,
+                  height: displayHeight * 0.6,
+                  child: SingleChildScrollView(
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(
+                            height: displayHeight * 0.02,
                           ),
-                        ),
-                      ]),
+                          Container(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: displayWidth * 0.01,
+                            ),
+                            width: displayWidth,
+                            child: Wrap(
+                              alignment: WrapAlignment.center,
+                              direction: Axis.horizontal,
+                              children: [
+                                Text(
+                                  widget.book.authors.join(' | '),
+                                  style: theme.textTheme.titleSmall!.copyWith(
+                                    color: theme.colorScheme.onPrimary,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(
+                            height: displayHeight * 0.02,
+                          ),
+                          //        isbn and number of pages
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                'ISBN: ${widget.book.isbn} | ${widget.book.pages} pages',
+                                style: theme.textTheme.labelLarge!.copyWith(
+                                  color: theme.colorScheme.onPrimary,
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: displayHeight * 0.02,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              RatingBarIndicator(
+                                rating: widget.book.rating,
+                                itemBuilder: (context, index) => const Icon(
+                                  Icons.star,
+                                  color: Colors.amber,
+                                ),
+                                itemCount: 5,
+                                itemSize: displayWidth * 0.065,
+                                unratedColor: theme.colorScheme.onPrimary,
+                              ),
+                              SizedBox(
+                                width: displayWidth * 0.02,
+                              ),
+                              // number of ratings
+                              Text(
+                                "(${widget.book.numRatings} rating(s))",
+                                style: theme.textTheme.labelSmall!.copyWith(
+                                  color: theme.colorScheme.onPrimary,
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: displayHeight * 0.02,
+                          ),
+                          Divider(
+                            color: theme.colorScheme.secondaryContainer,
+                            thickness: 1,
+                          ),
+                          SizedBox(
+                            height: displayHeight * 0.02,
+                          ),
+                          Padding(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: displayWidth * 0.05),
+                            child: Wrap(
+                              children: [
+                                Text(
+                                  widget.book.description,
+                                  style: theme.textTheme.bodyMedium!.copyWith(
+                                      color: theme.colorScheme.onPrimary),
+                                  textAlign: TextAlign.center,
+                                  softWrap: true,
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(
+                            height: displayHeight * 0.02,
+                          ),
+                          Divider(
+                            color: theme.colorScheme.secondaryContainer,
+                            thickness: 1,
+                          ),
+                          SizedBox(
+                            height: displayHeight * 0.02,
+                          ),
+                          // genres tags
+                          SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            padding: EdgeInsets.symmetric(
+                                horizontal: displayWidth * 0.03),
+                            child: Row(
+                              children: widget.book.genres
+                                  .map(
+                                    (genre) => Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Chip(
+                                          label: Text(
+                                            genre,
+                                            style: theme.textTheme.labelSmall,
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: displayWidth * 0.02,
+                                        ),
+                                      ],
+                                    ),
+                                  )
+                                  .toList(),
+                            ),
+                          ),
+                        ]),
+                  ),
                 ),
               ),
             ]),
@@ -282,7 +298,7 @@ class _BookDetailScreenState extends State<BookDetailScreen> {
                 children: [
                   // add to library button
                   ElevatedButton(
-                    onPressed: _onAddToLibrary,
+                    onPressed: state.isFetching ? null : _onAddToLibrary,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: theme.colorScheme.primary,
                       shape: RoundedRectangleBorder(
@@ -290,29 +306,45 @@ class _BookDetailScreenState extends State<BookDetailScreen> {
                             BorderRadius.circular(displayWidth * 0.02),
                       ),
                     ),
-                    child: Row(
-                      children: [
-                        Icon(
-                          Icons.add,
-                          color: theme.colorScheme.onPrimary,
-                        ),
-                        SizedBox(
-                          width: displayWidth * 0.02,
-                        ),
-                        Text(
-                          'Add to library',
-                          style: theme.textTheme.labelSmall!.copyWith(
-                            color: theme.colorScheme.onPrimary,
+                    child: state.isFetching
+                        ? SizedBox(
+                            height: displayHeight * 0.02,
+                            width: displayHeight * 0.02,
+                            child: CircularProgressIndicator(
+                              color: theme.colorScheme.onPrimary,
+                            ),
+                          )
+                        : Row(
+                            children: [
+                              Icon(
+                                state.isInHistory ? Icons.check : Icons.add,
+                                color: theme.colorScheme.onPrimary,
+                              ),
+                              SizedBox(
+                                width: displayWidth * 0.02,
+                              ),
+                              Text(
+                                state.isInHistory
+                                    ? 'Added to library'
+                                    : 'Add to library',
+                                style: theme.textTheme.labelSmall!.copyWith(
+                                  color: theme.colorScheme.onPrimary,
+                                ),
+                              ),
+                            ],
                           ),
-                        ),
-                      ],
-                    ),
                   ),
                 ],
               ),
             ),
           );
         });
+  }
+
+  @override
+  void dispose() {
+    _bookDetailBloc.close();
+    super.dispose();
   }
 }
 

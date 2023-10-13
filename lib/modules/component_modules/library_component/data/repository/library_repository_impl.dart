@@ -1,40 +1,43 @@
-import 'package:booksphere/modules/component_modules/common/utils/pagination_info.dart';
 import 'package:booksphere/modules/component_modules/library_component/data/datasource/spring_book_api_service.dart';
+import 'package:booksphere/modules/component_modules/library_component/data/model/rating_spring_model.dart';
+import 'package:booksphere/modules/component_modules/library_component/data/model/user_history_spring_model.dart';
 import 'package:booksphere/modules/component_modules/library_component/domain/entities/book.dart';
-import 'package:booksphere/modules/component_modules/library_component/domain/entities/book_state.dart';
-import 'package:booksphere/modules/component_modules/library_component/domain/entities/genre.dart';
 import 'package:booksphere/modules/component_modules/library_component/domain/entities/paginated_entity.dart';
 import 'package:booksphere/modules/component_modules/library_component/domain/entities/rating.dart';
 import 'package:booksphere/modules/component_modules/library_component/domain/entities/user_history.dart';
 import 'package:booksphere/modules/component_modules/library_component/domain/repository/library_repository.dart';
-import 'package:booksphere/utils/book_genre_utils.dart';
 import 'package:booksphere/utils/constants.dart';
 import 'package:dio/dio.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:injectable/injectable.dart';
 import 'package:logger/logger.dart';
 
 @Injectable(as: LibraryRepository)
-class LibraryRepositoryImpl implements LibraryRepository {
+class  LibraryRepositoryImpl implements LibraryRepository {
   LibraryRepositoryImpl(this._springBookApiService);
 
   final SpringBookApiService _springBookApiService;
+  final String _userId = FirebaseAuth.instance.currentUser!.uid;
 
   @override
   Future<bool> addBookToHistory(UserHistory userHistory) {
-    // TODO: implement addBookToHistory
-    throw UnimplementedError();
+    return _springBookApiService.springBookApiClient
+        .create(UserHistorySpringModel.fromEntity(userHistory))
+        .then((value) => true);
   }
 
   @override
-  Future<bool> deleteBookFromHistory(String bookId) {
-    // TODO: implement deleteBookFromHistory
-    throw UnimplementedError();
+  Future<bool> deleteBookFromHistory(UserHistory userHistory) {
+    return _springBookApiService.springBookApiClient
+        .delete(UserHistorySpringModel.fromEntity(userHistory))
+        .then((value) => true);
   }
 
   @override
   Future<bool> deleteRating(Rating rating) {
-    // TODO: implement deleteRating
-    throw UnimplementedError();
+    return _springBookApiService.springBookApiClient
+        .deleteRatingByUserIdAndBookId(rating.userId, rating.bookId)
+        .then((value) => true);
   }
 
   @override
@@ -67,20 +70,23 @@ class LibraryRepositoryImpl implements LibraryRepository {
 
   @override
   Future<bool> rateBook(Rating rating) {
-    // TODO: implement rateBook
-    throw UnimplementedError();
+    return _springBookApiService.springBookApiClient
+        .createRating(RatingSpringModel.fromEntity(rating))
+        .then((value) => true);
   }
 
   @override
   Future<bool> updateBookInHistory(UserHistory userHistory) {
-    // TODO: implement updateBookInHistory
-    throw UnimplementedError();
+    return _springBookApiService.springBookApiClient
+        .create(UserHistorySpringModel.fromEntity(userHistory))
+        .then((value) => true);
   }
 
   @override
   Future<bool> updateRating(Rating rating) {
-    // TODO: implement updateRating
-    throw UnimplementedError();
+    return _springBookApiService.springBookApiClient
+        .updateRating(rating.userId, RatingSpringModel.fromEntity(rating))
+        .then((value) => true);
   }
 
   @override
@@ -113,14 +119,44 @@ class LibraryRepositoryImpl implements LibraryRepository {
   @override
   Future<Rating?> getRatingByBookId(String bookId) {
     return _springBookApiService.springBookApiClient
-        .getRatingByBookIdAndUserId(bookId, signedInUser!.id!)
+        .getRatingByBookIdAndUserId(bookId, _userId)
         .then((value) => value?.toEntity());
   }
 
   @override
   Future<UserHistory?> getUserHistoryByBookId(String bookId) {
     return _springBookApiService.springBookApiClient
-        .getUserHistoryByUserIdAndBookId(signedInUser!.id!, bookId)
+        .getUserHistoryByUserIdAndBookId(_userId, bookId)
         .then((value) => value?.toEntity());
   }
+
+  @override
+  Future<List<UserHistory>> getUserHistory() {
+    return _springBookApiService.springBookApiClient
+        .getUserHistoryByUserId(_userId)
+        .then((value) => value.map((e) => e.toEntity()).toList());
+  }
+
+  @override
+  Future<List<Rating>> getRatingsByUserId() {
+    return _springBookApiService.springBookApiClient
+        .getRatingsByUserId(_userId)
+        .then((value) => value.map((e) => e.toEntity()).toList());
+  }
+
+  @override
+  Future<List<Book>> getBooksByIds(List<String> ids) {
+    // Logger().i('ids: $ids');
+    return _springBookApiService.springBookApiClient
+        .getBooksByIds(ids)
+        .then((value) => value.map((e) => e.toEntity()).toList());
+  }
+
+  @override
+  Future<List<Book>> getRecommendedBooks() {
+    return _springBookApiService.springBookApiClient
+        .getRecommendedBooks(_userId)
+        .then((value) => value.map((e) => e.toEntity()).toList());
+  }
+
 }

@@ -9,7 +9,7 @@ class UpdateBookInHistoryUseCase {
 
   UpdateBookInHistoryUseCase(this._libraryRepository);
 
-  Future<void> execute(UserHistory userHistory) async {
+  Future<void> call(UserHistory userHistory) async {
     await _libraryRepository.updateBookInHistory(userHistory);
   }
 }

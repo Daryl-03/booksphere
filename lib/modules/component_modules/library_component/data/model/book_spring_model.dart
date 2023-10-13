@@ -1,6 +1,7 @@
 import 'package:booksphere/modules/component_modules/library_component/domain/entities/book.dart';
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:logger/logger.dart';
 
 part 'book_spring_model.g.dart';
 
@@ -72,7 +73,10 @@ class BookSpringModel extends Equatable{
     authors: book.authors,
   );
 
-  factory BookSpringModel.fromJson(Map<String, dynamic> json) => _$BookSpringModelFromJson(json);
+  factory BookSpringModel.fromJson(Map<String, dynamic> json) {
+    // Logger().i(json);
+    return _$BookSpringModelFromJson(json);
+  }
 
   Map<String, dynamic> toJson() => _$BookSpringModelToJson(this);
 }

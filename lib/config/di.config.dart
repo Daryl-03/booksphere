@@ -25,16 +25,24 @@ import 'package:booksphere/modules/component_modules/library_component/domain/us
     as _i23;
 import 'package:booksphere/modules/component_modules/library_component/domain/use_cases/get_books_by_genre_use_case.dart'
     as _i24;
-import 'package:booksphere/modules/component_modules/library_component/domain/use_cases/get_books_by_title_use_case.dart'
+import 'package:booksphere/modules/component_modules/library_component/domain/use_cases/get_books_by_ids_use_case.dart'
     as _i25;
-import 'package:booksphere/modules/component_modules/library_component/domain/use_cases/get_books_use_case.dart'
+import 'package:booksphere/modules/component_modules/library_component/domain/use_cases/get_books_by_title_use_case.dart'
     as _i26;
-import 'package:booksphere/modules/component_modules/library_component/domain/use_cases/get_rating_by_book_id_use_case.dart'
+import 'package:booksphere/modules/component_modules/library_component/domain/use_cases/get_books_use_case.dart'
     as _i27;
-import 'package:booksphere/modules/component_modules/library_component/domain/use_cases/get_user_history_by_book_id_use_case.dart'
+import 'package:booksphere/modules/component_modules/library_component/domain/use_cases/get_rating_by_book_id_use_case.dart'
     as _i28;
-import 'package:booksphere/modules/component_modules/library_component/domain/use_cases/library_use_cases.dart'
+import 'package:booksphere/modules/component_modules/library_component/domain/use_cases/get_ratings_by_user_id_use_case.dart'
     as _i29;
+import 'package:booksphere/modules/component_modules/library_component/domain/use_cases/get_recommended_books_use_case.dart'
+    as _i30;
+import 'package:booksphere/modules/component_modules/library_component/domain/use_cases/get_user_history_by_book_id_use_case.dart'
+    as _i31;
+import 'package:booksphere/modules/component_modules/library_component/domain/use_cases/get_user_history_use_case.dart'
+    as _i32;
+import 'package:booksphere/modules/component_modules/library_component/domain/use_cases/library_use_cases.dart'
+    as _i33;
 import 'package:booksphere/modules/component_modules/library_component/domain/use_cases/rate_book_use_case.dart'
     as _i11;
 import 'package:booksphere/modules/component_modules/library_component/domain/use_cases/search_book_use_case.dart'
@@ -118,29 +126,41 @@ extension GetItInjectableX on _i1.GetIt {
         () => _i23.GetBooksByAuthorUseCase(gh<_i9.LibraryRepository>()));
     gh.lazySingleton<_i24.GetBooksByGenreUseCase>(
         () => _i24.GetBooksByGenreUseCase(gh<_i9.LibraryRepository>()));
-    gh.lazySingleton<_i25.GetBooksByTitleUseCase>(
-        () => _i25.GetBooksByTitleUseCase(gh<_i9.LibraryRepository>()));
-    gh.lazySingleton<_i26.GetBooksUseCase>(
-        () => _i26.GetBooksUseCase(gh<_i9.LibraryRepository>()));
-    gh.lazySingleton<_i27.GetRatingByBookIdUseCase>(
-        () => _i27.GetRatingByBookIdUseCase(gh<_i9.LibraryRepository>()));
-    gh.lazySingleton<_i28.GetUserHistoryByBookIdUseCase>(
-        () => _i28.GetUserHistoryByBookIdUseCase(gh<_i9.LibraryRepository>()));
-    gh.factory<_i29.LibraryUseCases>(() => _i29.LibraryUseCases(
+    gh.lazySingleton<_i25.GetBooksByIdsUseCase>(
+        () => _i25.GetBooksByIdsUseCase(gh<_i9.LibraryRepository>()));
+    gh.lazySingleton<_i26.GetBooksByTitleUseCase>(
+        () => _i26.GetBooksByTitleUseCase(gh<_i9.LibraryRepository>()));
+    gh.lazySingleton<_i27.GetBooksUseCase>(
+        () => _i27.GetBooksUseCase(gh<_i9.LibraryRepository>()));
+    gh.lazySingleton<_i28.GetRatingByBookIdUseCase>(
+        () => _i28.GetRatingByBookIdUseCase(gh<_i9.LibraryRepository>()));
+    gh.lazySingleton<_i29.GetRatingsByUserIdUseCase>(
+        () => _i29.GetRatingsByUserIdUseCase(gh<_i9.LibraryRepository>()));
+    gh.lazySingleton<_i30.GetRecommendedBooksUseCase>(
+        () => _i30.GetRecommendedBooksUseCase(gh<_i9.LibraryRepository>()));
+    gh.lazySingleton<_i31.GetUserHistoryByBookIdUseCase>(
+        () => _i31.GetUserHistoryByBookIdUseCase(gh<_i9.LibraryRepository>()));
+    gh.lazySingleton<_i32.GetUserHistoryUseCase>(
+        () => _i32.GetUserHistoryUseCase(gh<_i9.LibraryRepository>()));
+    gh.factory<_i33.LibraryUseCases>(() => _i33.LibraryUseCases(
           getBooksByGenreUseCase: gh<_i24.GetBooksByGenreUseCase>(),
-          getBooksUseCase: gh<_i26.GetBooksUseCase>(),
+          getBooksUseCase: gh<_i27.GetBooksUseCase>(),
           searchBookUseCase: gh<_i12.SearchBookUseCase>(),
           getBooksByAuthorUseCase: gh<_i23.GetBooksByAuthorUseCase>(),
-          getBooksByTitleUseCase: gh<_i25.GetBooksByTitleUseCase>(),
+          getBooksByTitleUseCase: gh<_i26.GetBooksByTitleUseCase>(),
           addBookToHistoryUseCase: gh<_i20.AddBookToHistoryUseCase>(),
           deleteBookFromHistoryUseCase: gh<_i21.DeleteBookFromHistoryUseCase>(),
           getUserHistoryByBookIdUseCase:
-              gh<_i28.GetUserHistoryByBookIdUseCase>(),
+              gh<_i31.GetUserHistoryByBookIdUseCase>(),
           updateBookInHistoryUseCase: gh<_i16.UpdateBookInHistoryUseCase>(),
-          getRatingByBookIdUseCase: gh<_i27.GetRatingByBookIdUseCase>(),
+          getRatingByBookIdUseCase: gh<_i28.GetRatingByBookIdUseCase>(),
           rateBookUseCase: gh<_i11.RateBookUseCase>(),
           updateRatingUseCase: gh<_i17.UpdateRatingUseCase>(),
           deleteRatingUseCase: gh<_i22.DeleteRatingUseCase>(),
+          getUserHistoryUseCase: gh<_i32.GetUserHistoryUseCase>(),
+          getRatingsByUserIdUseCase: gh<_i29.GetRatingsByUserIdUseCase>(),
+          getBooksByIdsUseCase: gh<_i25.GetBooksByIdsUseCase>(),
+          getRecommendedBooksUseCase: gh<_i30.GetRecommendedBooksUseCase>(),
         ));
     return this;
   }

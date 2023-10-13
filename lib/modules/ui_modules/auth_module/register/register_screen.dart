@@ -75,7 +75,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     final displayWidth = AppLayout.displayWidth(context);
     final displayHeight = AppLayout.displayHeightWithoutStatusBar(context);
     final theme = Theme.of(context);
-    final keyboardSpace = MediaQuery.of(context).viewInsets.bottom;
+    // final keyboardSpace = MediaQuery.of(context).viewInsets.bottom;
 
     return BlocConsumer<RegisterBloc, RegisterState>(
       bloc: _registerBloc,

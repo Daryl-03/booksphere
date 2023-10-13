@@ -31,8 +31,10 @@ class BookCarousel extends StatelessWidget {
             borderRadius: BorderRadius.circular(8.0),
           ),
           child: topBooks!.isEmpty
-              ? const Center(
-                  child: CircularProgressIndicator(),
+              ? Center(
+                  child: CircularProgressIndicator(
+                    color: theme.colorScheme.onPrimary,
+                  ),
                 )
               : GestureDetector(
                   onTap: () {
@@ -53,8 +55,10 @@ class BookCarousel extends StatelessWidget {
                       if (loadingProgress == null) {
                         return child;
                       }
-                      return const Center(
-                        child: CircularProgressIndicator(),
+                      return Center(
+                        child: CircularProgressIndicator(
+                          color: theme.colorScheme.onSecondaryContainer,
+                        ),
                       );
                     },
                   ),

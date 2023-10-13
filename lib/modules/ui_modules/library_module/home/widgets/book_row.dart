@@ -30,29 +30,44 @@ class BookRow extends StatelessWidget {
             children: [
               Text(
                 genre.name,
-                style: Theme.of(context).textTheme.headline6,
+                style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                      color: theme.colorScheme.onPrimary,
+                    ),
               ),
               TextButton(
                 onPressed: () {
-                  Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => GenreScreen(genre: genre),
-                      ));
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => GenreScreen(genre: genre),
+                  ));
                 },
-                child: const Text("See All"),
+                style: TextButton.styleFrom(
+                  // padding: EdgeInsets.zero,
+                  backgroundColor: theme.colorScheme.secondaryContainer.withOpacity(0.5),
+                ),
+                child: Text(
+                  "See All",
+                  style: Theme.of(context).textTheme.labelMedium!.copyWith(
+                        color: theme.colorScheme.onSecondaryContainer,
+                      ),
+                ),
               ),
             ],
           ),
         ),
+        SizedBox(height: displayHeight * 0.02),
         Container(
           // color: theme.colorScheme.secondaryContainer,
           height: displayHeight * 0.3,
           child: books.isEmpty
-              ? Center(
-                  child: CircularProgressIndicator(
-                    color: theme.colorScheme.onBackground,
+              ? SizedBox(
+                  height: displayHeight * 0.15,
+                  width: displayWidth,
+                child: Center(
+                    child: CircularProgressIndicator(
+                      color: theme.colorScheme.onPrimary,
+                    ),
                   ),
-                )
+              )
               : ListView.builder(
                   scrollDirection: Axis.horizontal,
                   itemCount: books.length,
@@ -61,13 +76,15 @@ class BookRow extends StatelessWidget {
                       onTap: () {
                         Navigator.of(context).push(
                           MaterialPageRoute(
-                            builder: (context) => BookDetailScreen(book: books[index]),
+                            builder: (context) =>
+                                BookDetailScreen(book: books[index]),
                           ),
                         );
                       },
                       child: Container(
                         width: displayWidth * 0.3,
-                        margin: EdgeInsets.symmetric(horizontal: displayWidth * 0.02),
+                        margin: EdgeInsets.symmetric(
+                            horizontal: displayWidth * 0.02),
                         child: Column(
                           children: [
                             Expanded(
@@ -80,7 +97,8 @@ class BookRow extends StatelessWidget {
                                     child: Icon(Icons.error),
                                   );
                                 },
-                                loadingBuilder: (context, child, loadingProgress) {
+                                loadingBuilder:
+                                    (context, child, loadingProgress) {
                                   if (loadingProgress == null) {
                                     return child;
                                   }
@@ -90,11 +108,14 @@ class BookRow extends StatelessWidget {
                                 },
                               ),
                             ),
+                            SizedBox(height: displayHeight * 0.01),
                             Expanded(
                               flex: 1,
                               child: Text(
                                 books[index].title,
-                                style: Theme.of(context).textTheme.labelMedium,
+                                style: Theme.of(context).textTheme.labelLarge!.copyWith(
+                                      color: theme.colorScheme.onPrimary,
+                                ),
                                 textAlign: TextAlign.center,
                                 overflow: TextOverflow.ellipsis,
                               ),
@@ -106,7 +127,7 @@ class BookRow extends StatelessWidget {
                   },
                 ),
         ),
-        SizedBox(height: displayHeight * 0.02),
+        SizedBox(height: displayHeight * 0.015),
       ],
     );
   }

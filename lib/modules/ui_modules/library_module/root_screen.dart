@@ -2,6 +2,8 @@ import 'package:booksphere/modules/ui_modules/library_module/search/search_scree
 import 'package:flutter/material.dart';
 
 import 'home/home_screen.dart';
+import 'library/library_screen.dart';
+import 'recommendation/recommendation_screen.dart';
 
 class RootScreen extends StatefulWidget {
   const RootScreen({Key? key}) : super(key: key);
@@ -15,7 +17,9 @@ class _RootScreenState extends State<RootScreen> {
 
   final List<Widget> _screens = [
     const HomeScreen(),
-    const SearchScreen()
+    const SearchScreen(),
+    const RecommendationScreen(),
+    const LibraryScreen(),
   ];
 
   @override
@@ -23,15 +27,17 @@ class _RootScreenState extends State<RootScreen> {
     final theme = Theme.of(context);
 
     return Scaffold(
+      // backgroundColor: theme.colorScheme.primary,
       body: IndexedStack(
         index: _selectedIndex,
         children: _screens,
       ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
-        backgroundColor: theme.colorScheme.background,
-        fixedColor: theme.colorScheme.onBackground,
-        unselectedItemColor: theme.colorScheme.onBackground.withOpacity(0.5),
+        backgroundColor: theme.colorScheme.secondaryContainer,
+        fixedColor: theme.colorScheme.onSecondaryContainer,
+        type: BottomNavigationBarType.fixed,
+        unselectedItemColor: theme.colorScheme.onSecondaryContainer.withOpacity(0.5),
         onTap: (index) => setState(() => _selectedIndex = index),
         items: const [
           BottomNavigationBarItem(
@@ -48,7 +54,7 @@ class _RootScreenState extends State<RootScreen> {
               label: "Recommendation"),
           //library screen
           BottomNavigationBarItem(
-            icon: Icon(Icons.book),
+            icon: Icon(Icons.local_library),
             label: "Library",
           )
         ],

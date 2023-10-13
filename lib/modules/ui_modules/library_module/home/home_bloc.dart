@@ -31,7 +31,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     // Logger().d("fetching top books");
 
 
-    var top = await _libraryUseCases.getBooksUseCase(3, booksPerGenre);
+    var top = await _libraryUseCases.getBooksUseCase(0, booksPerGenre);
     // Logger().d("top books fetched : $top");
     emit(state.copyWith(topBooks: top.data));
     // Logger().d("fetching top books done");

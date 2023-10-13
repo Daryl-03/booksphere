@@ -6,7 +6,6 @@ import 'package:booksphere/modules/component_modules/library_component/domain/us
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
-import 'package:retrofit/retrofit.dart';
 
 import 'result_event.dart';
 import 'result_state.dart';

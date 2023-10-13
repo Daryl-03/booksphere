@@ -2,9 +2,14 @@ import 'package:booksphere/modules/component_modules/library_component/domain/en
 import 'package:booksphere/modules/component_modules/library_component/domain/entities/book_state.dart';
 import 'package:booksphere/modules/component_modules/library_component/domain/entities/rating.dart';
 import 'package:booksphere/modules/component_modules/library_component/domain/entities/user_history.dart';
+import 'package:booksphere/modules/ui_modules/library_module/book_detail/book_detail_bloc.dart';
+import 'package:booksphere/modules/ui_modules/library_module/book_detail/book_detail_event.dart';
 import 'package:booksphere/utils/app_layout.dart';
+import 'package:booksphere/utils/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:logger/logger.dart';
 
 class BookLibraryInput extends StatefulWidget {
   const BookLibraryInput({
@@ -27,12 +32,15 @@ class _BookLibraryInputState extends State<BookLibraryInput> {
   var _selectedBookState = BookState.values[0];
   var _selectedRating = 0.0;
   var _selectedBookmark = 1;
+  var _isInHistory = false;
 
   @override
   void initState() {
+    // Logger().i(widget.book);
     if (widget.userHistory != null) {
       _selectedBookState = widget.userHistory!.bookState;
-      _selectedBookmark = widget.userHistory!.bookmark;
+      _selectedBookmark = widget.userHistory!.bookmark ?? 1;
+      _isInHistory = true;
     }
     if (widget.rating != null) {
       _selectedRating = widget.rating!.rating;
@@ -185,6 +193,7 @@ class _BookLibraryInputState extends State<BookLibraryInput> {
                   style: theme.textTheme.labelMedium!.copyWith(
                     color: theme.colorScheme.onPrimary,
                   ),
+                  cursorColor: theme.colorScheme.onPrimary,
                   validator: (value) {
                     if (_selectedBookState != BookState.reading) {
                       return null;
@@ -200,6 +209,11 @@ class _BookLibraryInputState extends State<BookLibraryInput> {
                       return 'Please enter a page number less than ${widget.book.pages}';
                     }
                     return null;
+                  },
+                  onSaved: (value) {
+                    if (_selectedBookState == BookState.reading) {
+                      _selectedBookmark = int.parse(value!);
+                    }
                   },
                 ),
               SizedBox(
@@ -240,20 +254,81 @@ class _BookLibraryInputState extends State<BookLibraryInput> {
                 height: displayHeight * 0.03,
               ),
               // submit
-              ElevatedButton(
-                onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                    Navigator.of(context).pop();
-                  }
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: theme.colorScheme.secondaryContainer,
-                ),
-                child: Text('Submit',
-                    style: theme.textTheme.labelMedium!.copyWith(
-                      color: theme.colorScheme.onSecondaryContainer,
-                    )),
-              ),
+              Row(
+                mainAxisAlignment: _isInHistory
+                    ? MainAxisAlignment.spaceBetween
+                    : MainAxisAlignment.center,
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        _formKey.currentState!.save();
+                        var userHistory = _isInHistory
+                            ? widget.userHistory!.copyWith(
+                                bookState: _selectedBookState,
+                                bookmark: _selectedBookmark,
+                              )
+                            : UserHistory(
+                                userId: signedInUserId!,
+                                bookId: widget.book.bookId,
+                                bookState: _selectedBookState,
+                                bookmark: _selectedBookmark,
+                              );
+                        var rating = widget.rating != null
+                            ? widget.rating!.copyWith(rating: _selectedRating)
+                            : Rating(
+                                bookId: widget.book.bookId,
+                                userId: signedInUserId!,
+                                rating: _selectedRating,
+                              );
+                        BlocProvider.of<BookDetailBloc>(context)
+                            .add(UpdateHistory(userHistory, rating));
+                        Navigator.of(context).pop();
+                      }
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: theme.colorScheme.secondaryContainer,
+                    ),
+                    child: Text(
+                      'Submit',
+                      style: theme.textTheme.labelMedium!.copyWith(
+                        color: theme.colorScheme.onSecondaryContainer,
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    width: displayWidth * 0.05,
+                  ),
+                  if (_isInHistory)
+                    ElevatedButton(
+                      onPressed: () {
+                        BlocProvider.of<BookDetailBloc>(context)
+                            .add(RemoveFromLibrary());
+                        Navigator.of(context).pop();
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: theme.colorScheme.secondaryContainer,
+                      ),
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.delete,
+                            color: theme.colorScheme.onSecondaryContainer,
+                          ),
+                          SizedBox(
+                            width: displayWidth * 0.01,
+                          ),
+                          Text(
+                            'Remove',
+                            style: theme.textTheme.labelMedium!.copyWith(
+                              color: theme.colorScheme.onSecondaryContainer,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                ],
+              )
             ],
           ),
         ),

@@ -44,7 +44,7 @@ class _HomeScreenState extends State<HomeScreen> {
           return loadingWidget;
         }
         return Scaffold(
-          backgroundColor: theme.colorScheme.background,
+          backgroundColor: theme.colorScheme.primary,
           appBar: AppBar(
             title: Text(
               "Hi, ${state.user != null ? state.user!.username : "Reader"}",
@@ -62,26 +62,31 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ],
           ),
-          body: SingleChildScrollView(
-            child: Column(
-              children: [
-                Container(
-                  margin: EdgeInsets.only(
-                    top: displayHeight * 0.04,
-                    bottom: displayHeight * 0.02,
+          body: RefreshIndicator(
+            onRefresh: () async {
+              _homeBloc.add(HomeInitialEvent());
+            },
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Container(
+                    margin: EdgeInsets.only(
+                      top: displayHeight * 0.04,
+                      bottom: displayHeight * 0.02,
+                    ),
+                    height: displayHeight * 0.5,
+                    child: BookCarousel(topBooks: state.topBooks),
                   ),
-                  height: displayHeight * 0.5,
-                  child: BookCarousel(topBooks: state.topBooks),
-                ),
-                SizedBox(height: displayHeight * 0.02),
-                for(var genre in BookGenreUtils.getAppGenres())
-                  BookRow(
-                    key: ObjectKey(genre),
-                    books: state.map![genre] ?? [],
-                    genre: genre,
-                  ),
+                  SizedBox(height: displayHeight * 0.02),
+                  for(var genre in BookGenreUtils.getAppGenres())
+                    BookRow(
+                      key: ObjectKey(genre),
+                      books: state.map![genre] ?? [],
+                      genre: genre,
+                    ),
 
-              ],
+                ],
+              ),
             ),
           ),
         );

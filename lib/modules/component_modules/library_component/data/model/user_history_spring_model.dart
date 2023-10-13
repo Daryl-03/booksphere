@@ -17,10 +17,10 @@ class UserHistorySpringModel extends Equatable {
   });
 
   final int? id;
-  final int userId;
+  final String userId;
   final String bookId;
   final BookState bookState;
-  final int bookmark;
+  final int? bookmark;
 
   UserHistory toEntity() => UserHistory(
     id: id,

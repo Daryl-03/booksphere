@@ -9,7 +9,6 @@ class GetUserHistoryByBookIdUseCase{
 
   GetUserHistoryByBookIdUseCase(this._libraryRepository);
 
-  @override
   Future<UserHistory?> call(String bookId) async {
     return await _libraryRepository.getUserHistoryByBookId(bookId);
   }

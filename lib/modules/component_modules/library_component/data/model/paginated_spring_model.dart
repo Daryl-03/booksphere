@@ -1,7 +1,4 @@
 
-import 'package:booksphere/modules/component_modules/library_component/data/model/book_spring_model.dart';
-import 'package:booksphere/modules/component_modules/library_component/domain/entities/book.dart';
-import 'package:booksphere/modules/component_modules/library_component/domain/entities/paginated_entity.dart';
 import 'package:booksphere/modules/component_modules/common/utils/pagination_info.dart';
 import 'package:booksphere/modules/component_modules/library_component/utils/ModelConverter.dart';
 import 'package:equatable/equatable.dart';

@@ -4,12 +4,12 @@ import 'package:booksphere/modules/component_modules/library_component/domain/re
 import 'package:injectable/injectable.dart';
 
 @lazySingleton
-class UpdateRatingUseCase {
-  final LibraryRepository _repository;
+class GetRatingsByUserIdUseCase {
+  final LibraryRepository _libraryRepository;
 
-  UpdateRatingUseCase(this._repository);
+  GetRatingsByUserIdUseCase(this._libraryRepository);
 
-  Future<void> call(Rating rating) async {
-    await _repository.updateRating(rating);
+  Future<List<Rating>> call() async{
+    return await _libraryRepository.getRatingsByUserId();
   }
 }

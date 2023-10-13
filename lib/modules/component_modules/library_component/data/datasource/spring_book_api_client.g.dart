@@ -13,7 +13,7 @@ class _SpringBookApiClient implements SpringBookApiClient {
     this._dio, {
     this.baseUrl,
   }) {
-    baseUrl ??= 'http://192.168.1.66:8080/';
+    baseUrl ??= 'http://192.168.98.152:8080/';
   }
 
   final Dio _dio;
@@ -214,6 +214,35 @@ class _SpringBookApiClient implements SpringBookApiClient {
   }
 
   @override
+  Future<List<BookSpringModel>> getBooksByIds(List<String> ids) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'ids': ids};
+    final _headers = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
+    final _result = await _dio
+        .fetch<List<dynamic>>(_setStreamType<List<BookSpringModel>>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              'api/book/getBooksByIds',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    var value = _result.data!
+        .map((dynamic i) => BookSpringModel.fromJson(i as Map<String, dynamic>))
+        .toList();
+    return value;
+  }
+
+  @override
   Future<void> createRating(RatingSpringModel rating) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
@@ -227,7 +256,7 @@ class _SpringBookApiClient implements SpringBookApiClient {
     )
         .compose(
           _dio.options,
-          'api/ratings',
+          'api/rating',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -255,7 +284,7 @@ class _SpringBookApiClient implements SpringBookApiClient {
     )
         .compose(
           _dio.options,
-          'api/ratings',
+          'api/rating',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -285,7 +314,7 @@ class _SpringBookApiClient implements SpringBookApiClient {
     )
         .compose(
           _dio.options,
-          'api/ratings/deleteByUserIdAndBookId',
+          'api/rating/deleteByUserIdAndBookId',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -316,7 +345,7 @@ class _SpringBookApiClient implements SpringBookApiClient {
     )
             .compose(
               _dio.options,
-              'api/ratings/getByBookIdAndUserId',
+              'api/rating/getByBookIdAndUserId',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -327,6 +356,36 @@ class _SpringBookApiClient implements SpringBookApiClient {
             ))));
     final value =
         _result.data == null ? null : RatingSpringModel.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<List<RatingSpringModel>> getRatingsByUserId(String userId) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
+    final _result = await _dio
+        .fetch<List<dynamic>>(_setStreamType<List<RatingSpringModel>>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              'api/rating/getByBookId/${userId}',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    var value = _result.data!
+        .map((dynamic i) =>
+            RatingSpringModel.fromJson(i as Map<String, dynamic>))
+        .toList();
     return value;
   }
 
@@ -412,6 +471,66 @@ class _SpringBookApiClient implements SpringBookApiClient {
     final value = _result.data == null
         ? null
         : UserHistorySpringModel.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<List<UserHistorySpringModel>> getUserHistoryByUserId(
+      String userId) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'userId': userId};
+    final _headers = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
+    final _result = await _dio.fetch<List<dynamic>>(
+        _setStreamType<List<UserHistorySpringModel>>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              'api/user_history/getByUserId',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    var value = _result.data!
+        .map((dynamic i) =>
+            UserHistorySpringModel.fromJson(i as Map<String, dynamic>))
+        .toList();
+    return value;
+  }
+
+  @override
+  Future<List<BookSpringModel>> getRecommendedBooks(String userId) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'userId': userId};
+    final _headers = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
+    final _result = await _dio
+        .fetch<List<dynamic>>(_setStreamType<List<BookSpringModel>>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              'api/recommendation',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    var value = _result.data!
+        .map((dynamic i) => BookSpringModel.fromJson(i as Map<String, dynamic>))
+        .toList();
     return value;
   }
 

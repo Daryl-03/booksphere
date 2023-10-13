@@ -10,18 +10,12 @@ class InitBookDetailState extends BookDetailEvent {
   InitBookDetailState(this.bookId);
 }
 
-class AddToLibrary extends BookDetailEvent {
-  final UserHistory userHistory;
-  final Rating? rating;
-
-  AddToLibrary(this.userHistory, this.rating);
-}
-
-class UpdateRating extends BookDetailEvent {
-  final Rating rating;
-
-  UpdateRating(this.rating);
-}
+// class AddToLibrary extends BookDetailEvent {
+//   final UserHistory userHistory;
+//   final Rating? rating;
+//
+//   AddToLibrary(this.userHistory, this.rating);
+// }
 
 class UpdateHistory extends BookDetailEvent {
   final UserHistory userHistory;

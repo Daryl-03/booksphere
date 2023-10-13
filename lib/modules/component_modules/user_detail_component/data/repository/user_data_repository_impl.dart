@@ -1,13 +1,11 @@
 
 import 'package:booksphere/modules/component_modules/user_detail_component/data/model/firebase_user_model.dart';
 import 'package:booksphere/modules/component_modules/user_detail_component/domain/entities/booksphere_user.dart';
-import 'package:booksphere/modules/component_modules/library_component/domain/entities/user_history.dart';
 import 'package:booksphere/modules/component_modules/user_detail_component/domain/repository/user_data_repository.dart';
 import 'package:booksphere/utils/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:injectable/injectable.dart';
-import 'package:logger/logger.dart';
 
 @Injectable(as: UserDataRepository)
 class UserDataRepositoryImpl implements UserDataRepository{
@@ -28,6 +26,7 @@ class UserDataRepositoryImpl implements UserDataRepository{
     } catch (e) {
       print(e);
     }
+    return null;
   }
 
   @override
