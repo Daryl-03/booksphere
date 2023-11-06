@@ -1,5 +1,6 @@
 
 
+import 'package:booksphere/modules/component_modules/user_detail_component/domain/use_cases/get_signed_in_user_token.dart';
 import 'package:booksphere/modules/component_modules/user_detail_component/domain/use_cases/sign_in_with_email_use_case.dart';
 import 'package:booksphere/modules/component_modules/user_detail_component/domain/use_cases/sign_out_use_case.dart';
 import 'package:booksphere/modules/component_modules/user_detail_component/domain/use_cases/sign_up_with_email_use_case.dart';
@@ -17,6 +18,7 @@ class UserDetailUseCases {
     required this.signOutUseCase,
     required this.updateUserDataUseCase,
     required this.getUserDataUseCase,
+    required this.getSignedInUserTokenUseCase,
   });
 
   final SignInWithEmailUseCase signInWithEmailUseCase;
@@ -25,4 +27,5 @@ class UserDetailUseCases {
 
   final UpdateUserDataUseCase updateUserDataUseCase;
   final GetUserDataUseCase getUserDataUseCase;
+  final GetSignedInUserTokenUseCase getSignedInUserTokenUseCase;
 }

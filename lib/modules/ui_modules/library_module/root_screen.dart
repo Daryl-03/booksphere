@@ -39,6 +39,8 @@ class _RootScreenState extends State<RootScreen> {
         type: BottomNavigationBarType.fixed,
         unselectedItemColor: theme.colorScheme.onSecondaryContainer.withOpacity(0.5),
         onTap: (index) => setState(() => _selectedIndex = index),
+        unselectedLabelStyle: theme.textTheme.labelSmall,
+        selectedLabelStyle: theme.textTheme.labelLarge,
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
@@ -50,8 +52,9 @@ class _RootScreenState extends State<RootScreen> {
           ),
           BottomNavigationBarItem(
               // recommendation screen
+
               icon: Icon(Icons.lightbulb),
-              label: "Recommendation"),
+              label: "Recomm."),
           //library screen
           BottomNavigationBarItem(
             icon: Icon(Icons.local_library),

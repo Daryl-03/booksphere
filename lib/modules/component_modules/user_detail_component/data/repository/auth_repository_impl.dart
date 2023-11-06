@@ -71,4 +71,21 @@ class AuthRepositoryImpl implements AuthRepository {
     }
     return false;
   }
+
+  @override
+  Future<String?> getSignedInUserToken(bool forceRefresh) {
+    Future<String?> token;
+    try {
+      token = _firebaseAuth.currentUser!.getIdToken(forceRefresh);
+
+      // _firebaseAuth.idTokenChanges().listen((event) {
+      //   token = event!.getIdToken();
+      // });
+
+    } on Exception catch (e) {
+      Logger().e(e);
+      throw AuthException("Error getting token");
+    }
+    return token;
+  }
 }

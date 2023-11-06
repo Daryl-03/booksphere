@@ -1,7 +1,10 @@
+import 'package:booksphere/modules/component_modules/library_component/data/model/genre_spring_model.dart';
 import 'package:booksphere/modules/component_modules/library_component/domain/entities/book.dart';
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:logger/logger.dart';
+
+import 'author_spring_model.dart';
 
 part 'book_spring_model.g.dart';
 
@@ -29,8 +32,8 @@ class BookSpringModel extends Equatable{
   final int pages;
   final double rating;
   final int numRatings;
-  final List<String>? genres;
-  final List<String>? authors;
+  final List<GenreSpringModel>? genres;
+  final List<AuthorSpringModel>? authors;
 
 
   @override
@@ -56,8 +59,8 @@ class BookSpringModel extends Equatable{
     pages: pages,
     rating: rating,
     numRatings: numRatings,
-    genres: genres ?? [],
-    authors: authors ?? [],
+    genres: genres?.map((e) => e.name).toList() ?? [],
+    authors: authors?.map((e) => e.name).toList() ?? [],
   );
 
   factory BookSpringModel.fromEntity(Book book) => BookSpringModel(
@@ -69,8 +72,8 @@ class BookSpringModel extends Equatable{
     pages: book.pages,
     rating: book.rating,
     numRatings: book.numRatings,
-    genres: book.genres,
-    authors: book.authors,
+    genres: book.genres.map((e) => GenreSpringModel(id: 0, name: e)).toList(),
+    authors: book.authors.map((e) => AuthorSpringModel(id: 0, name: e)).toList(),
   );
 
   factory BookSpringModel.fromJson(Map<String, dynamic> json) {

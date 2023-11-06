@@ -53,18 +53,23 @@ class LibraryBloc extends Bloc<LibraryEvent, LibraryState>{
   }
 
   FutureOr<void> _onFilterLibrary(FilterLibrary event, Emitter<LibraryState> emit) {
+
+    var filteredUserLibrary = state.userLibrary.where((element) {
+      if (event.filterType == FilterType.all) {
+        return true;
+      } else {
+        return element.bookState.name == event.filterType.name;
+      }
+    }).toList();
+
+    var filteredBooks = filteredUserLibrary.map((userHistory) {
+      return state.books.firstWhere((element) => element.bookId == userHistory.bookId);
+    }).toList();
+
     emit(state.copyWith(
       filterType: event.filterType,
-      filteredUserLibrary: state.userLibrary.where((element) {
-        if (event.filterType == FilterType.all) {
-          return true;
-        } else {
-          return element.bookState.name == event.filterType.name;
-        }
-      }).toList(),
-      filteredBooks: state.filteredUserLibrary.map((userHistory) {
-        return state.books.firstWhere((element) => element.bookId == userHistory.bookId);
-      }).toList(),
+      filteredUserLibrary: filteredUserLibrary,
+      filteredBooks: filteredBooks,
     ));
   }
 }

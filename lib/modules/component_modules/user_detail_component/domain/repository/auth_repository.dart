@@ -7,6 +7,8 @@ abstract class AuthRepository {
 
   Future<bool> signUpWithEmail(BooksphereUser user);
 
+  Future<String?> getSignedInUserToken(bool forceRefresh);
+
   Future<void> signOut();
 
   bool isSignedIn();

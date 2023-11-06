@@ -52,7 +52,7 @@ class BookDetailBloc extends Bloc<BookDetailEvent, BookDetailState>{
         );
       }
     } else {
-      if (event.rating != null) {
+      if (event.rating != null && state.rating!.id != null) {
         await _libraryUseCases.deleteRatingUseCase(event.rating!);
       }
     }

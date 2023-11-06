@@ -16,10 +16,12 @@ BookSpringModel _$BookSpringModelFromJson(Map<String, dynamic> json) =>
       pages: json['pages'] as int,
       rating: (json['rating'] as num).toDouble(),
       numRatings: json['numRatings'] as int,
-      genres:
-          (json['genres'] as List<dynamic>?)?.map((e) => e as String).toList(),
-      authors:
-          (json['authors'] as List<dynamic>?)?.map((e) => e as String).toList(),
+      genres: (json['genres'] as List<dynamic>?)
+          ?.map((e) => GenreSpringModel.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      authors: (json['authors'] as List<dynamic>?)
+          ?.map((e) => AuthorSpringModel.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
 Map<String, dynamic> _$BookSpringModelToJson(BookSpringModel instance) =>

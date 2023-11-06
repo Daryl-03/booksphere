@@ -1,8 +1,10 @@
 
 import 'package:booksphere/modules/component_modules/library_component/data/datasource/spring_book_api_client.dart';
+import 'package:booksphere/modules/component_modules/library_component/data/datasource/token_interceptor.dart';
 import 'package:booksphere/utils/spring_book_api_endpoints.dart';
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
+import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
 @injectable
 class SpringBookApiService {
@@ -21,6 +23,17 @@ class SpringBookApiService {
         contentType: 'application/json',
       ),
     );
+    dio.interceptors.add(
+      PrettyDioLogger(
+        requestHeader: true,
+        requestBody: true,
+        responseBody: true,
+        responseHeader: false,
+        error: true,
+        compact: true,
+      ),
+    );
+    dio.interceptors.add(TokenInterceptor(dio));
     return dio;
   }
 }

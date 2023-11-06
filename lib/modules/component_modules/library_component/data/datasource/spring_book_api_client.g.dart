@@ -13,7 +13,7 @@ class _SpringBookApiClient implements SpringBookApiClient {
     this._dio, {
     this.baseUrl,
   }) {
-    baseUrl ??= 'http://192.168.98.152:8080/';
+    baseUrl ??= 'http://192.168.1.66:8080/';
   }
 
   final Dio _dio;
